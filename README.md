@@ -20,4 +20,3 @@ The next M lines contains triple integers A, B, and C describing the plane route
 For each test, print the line "Instancia k", where k is the number of the current test case. Besides, print the least amount of money the friends will pay to get back to Brazil (1015). If there's no way to pick up a set of flights that will take all home, print "impossivel" (impossible).
 
 Print a blank line after each test.
-
