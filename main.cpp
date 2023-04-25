@@ -24,7 +24,7 @@ struct edge {
     }
 };
 
-int addEdge(int vertex_1, int vertex_2, int cost, int capacity, int edge_count, vector<int>& previous, vector<edge>& graph) {
+int add_edge(int vertex_1, int vertex_2, int cost, int capacity, int edge_count, vector<int>& previous, vector<edge>& graph) {
     // Aresta adicionada ao grafo.
     graph[edge_count] = edge(vertex_1, vertex_2, previous[vertex_1], cost, capacity);
     previous[vertex_1] = edge_count++;
@@ -49,6 +49,15 @@ int augment(int vertex, vector<int>& parents, vector<edge>& graph) {
         // melhor para o fluxo ótimo.
     }
     return flow;
+}
+
+// Printa os caminhos invertidos e incluindo o vértice artificial 0
+void print_path(int destination, vector<int> parents, vector<edge> graph) {
+    cout << "\nPath :";
+    for (int i = parents[destination]; i != -1; i = parents[graph[i].vertex_1]) {
+        cout << " " << graph[i].vertex_1 << ",";
+    }
+    cout << "\n";
 }
 
 // Algoritmo de Dijkstra adaptado
@@ -100,18 +109,19 @@ int main() {
         cin >> n_friends >> n_sits_per_flight;
         // Arestas artificiais de entrada e saída do fluxo (Vértices 0 e n_cities + 1 são artificiais).
         // Arestas de custo 0 e capacidade n_friends.
-        edge_count = addEdge(0, 1, 0, n_friends, edge_count, previous, graph);
-        edge_count = addEdge(n_cities, n_cities + 1, 0, n_friends, edge_count, previous, graph);
+        edge_count = add_edge(0, 1, 0, n_friends, edge_count, previous, graph);
+        edge_count = add_edge(n_cities, n_cities + 1, 0, n_friends, edge_count, previous, graph);
         for (int i = 0; i < n_flights; i++) {
             // Adiciona aresta no grafo, como descrito na leitura das informações a, b, c (origem, destino e custo).
             // E com capacidade igual ao número de assentos por vôo (n_sits_per_flight).
-            edge_count = addEdge(a[i], b[i], c[i], n_sits_per_flight, edge_count, previous, graph);
+            edge_count = add_edge(a[i], b[i], c[i], n_sits_per_flight, edge_count, previous, graph);
             // No caso desse problema, como descrito no enunciado, para cada vôo de ida, temos um vôo de volta identico em custo e capacidade.
-            edge_count = addEdge(b[i], a[i], c[i], n_sits_per_flight, edge_count, previous, graph);
+            edge_count = add_edge(b[i], a[i], c[i], n_sits_per_flight, edge_count, previous, graph);
         }
         int max_flow = 0, resp = 0;
         // Encontra o caminho de menor custo da origem para o destino e retorna o custo.
         int shortest_path = dijkstra(0, n_cities + 1, n_cities, previous, parents, graph);
+//        print_path(n_cities + 1, parents, graph); // Descomentar se quiser ver os caminhos pra entender o funcionamento.
         while (shortest_path != INF) {
             int flow = augment(n_cities + 1, parents, graph); // Aumenta o fluxo pelo caminho.
             max_flow += flow;
@@ -121,6 +131,7 @@ int main() {
             }
             // Recalcula custo do caminho mínimo com as capacidades atualizadas.
             shortest_path = dijkstra(0, n_cities + 1, n_cities, previous, parents, graph);
+//            print_path(n_cities + 1, parents, graph); // Descomentar se quiser ver os caminhos pra entender o funcionamento.
         }
         if (max_flow != n_friends) {
             cout << "impossivel" << endl << endl;
