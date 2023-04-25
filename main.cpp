@@ -37,12 +37,13 @@ int addEdge(int vertex_1, int vertex_2, int cost, int capacity, int edge_count, 
 int augment(int vertex, vector<int>& parents, vector<edge>& graph) {
     int flow = INF;
     for (int i = parents[vertex]; i != -1; i = parents[graph[i].vertex_1]) {
-        flow = min(flow, graph[i].capacity);
+        flow = min(flow, graph[i].capacity);    // Caputa a menor capacidade de todas as arestas no caminho.
     }
 
     for (int i = parents[vertex]; i != -1; i = parents[graph[i].vertex_1]) {
         graph[i].capacity -= flow;
-        graph[i + 1].capacity += flow;
+        graph[i + 1].capacity += flow;  // Ajusta as arestas de retorno para permitir retorno caso haja outro caminho
+        // melhor para o fluxo ótimo.
     }
     return flow;
 }
