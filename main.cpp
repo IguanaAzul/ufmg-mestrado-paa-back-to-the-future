@@ -28,7 +28,10 @@ int addEdge(int vertex_1, int vertex_2, int cost, int capacity, int edge_count, 
     // Aresta adicionada ao grafo.
     graph[edge_count] = edge(vertex_1, vertex_2, previous[vertex_1], cost, capacity);
     previous[vertex_1] = edge_count++;
-    // Aresta de retorno.
+
+    // Aresta de retorno, inicializada com capacidade 0 e custo negativo,
+    // só vai ser utilizada depois que o augment executar e permitir retorno.
+    // Possibilita que outros caminhos sejam testados que não seja o mínimo.
     graph[edge_count] = edge(vertex_2, vertex_1, previous[vertex_2], -cost, 0);
     previous[vertex_2] = edge_count++;
     return edge_count;
