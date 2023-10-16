@@ -90,7 +90,7 @@ int dijkstra(int origin, int destination, int n_vertices, vector<int>& previous,
 
 int main() {
     int count = 0;
-    int n_cities, n_flights, edge_count, n_friends, n_sits_per_flight;
+    int n_cities, n_flights, edge_count, n_friends, n_seats_per_flight;
 
     while (cin >> n_cities >> n_flights) { // Leitura iterativa de cada instância, quando não houver mais, interrompe.
         count ++;
@@ -106,17 +106,17 @@ int main() {
         for (int i = 0; i < n_flights; i++) {
             cin >> a[i] >> b[i] >> c[i];
         }
-        cin >> n_friends >> n_sits_per_flight;
+        cin >> n_friends >> n_seats_per_flight;
         // Arestas artificiais de entrada e saída do fluxo (Vértices 0 e n_cities + 1 são artificiais).
         // Arestas de custo 0 e capacidade n_friends.
         edge_count = add_edge(0, 1, 0, n_friends, edge_count, previous, graph);
         edge_count = add_edge(n_cities, n_cities + 1, 0, n_friends, edge_count, previous, graph);
         for (int i = 0; i < n_flights; i++) {
             // Adiciona aresta no grafo, como descrito na leitura das informações a, b, c (origem, destino e custo).
-            // E com capacidade igual ao número de assentos por vôo (n_sits_per_flight).
-            edge_count = add_edge(a[i], b[i], c[i], n_sits_per_flight, edge_count, previous, graph);
+            // E com capacidade igual ao número de assentos por vôo (n_seats_per_flight).
+            edge_count = add_edge(a[i], b[i], c[i], n_seats_per_flight, edge_count, previous, graph);
             // No caso desse problema, como descrito no enunciado, para cada vôo de ida, temos um vôo de volta identico em custo e capacidade.
-            edge_count = add_edge(b[i], a[i], c[i], n_sits_per_flight, edge_count, previous, graph);
+            edge_count = add_edge(b[i], a[i], c[i], n_seats_per_flight, edge_count, previous, graph);
         }
         int max_flow = 0, resp = 0;
         // Encontra o caminho de menor custo da origem para o destino e retorna o custo.
